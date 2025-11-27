@@ -10,7 +10,7 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
 # Copy project files
 COPY pyproject.toml .
 COPY README.md .
-COPY secops_mcp/ ./secops_mcp/
+COPY src/ ./secops_mcp/
 
 # Install dependencies
 # We use --system to install into the system python, which is fine in a container
@@ -24,3 +24,4 @@ EXPOSE 8080
 # We use the FastMCP ASGI app exposed by the server instance
 # Note: We need to make sure server.py exposes the 'server' object which is the FastMCP instance
 CMD ["uvicorn", "secops_mcp.server:server", "--host", "0.0.0.0", "--port", "8080"]
+
