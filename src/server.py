@@ -98,8 +98,10 @@ if __name__ == '__main__':
 # Expose ASGI app for Cloud Run
 # FastMCP instance itself is not an ASGI app, we need to extract/create it.
 try:
-    if hasattr(server, 'create_asgi_app'):
+    if hasattr(server, 'create_asgi_app') and callable(server.create_asgi_app):
         app = server.create_asgi_app()
+    elif hasattr(server, 'sse_app') and callable(server.sse_app):
+        app = server.sse_app()
     elif hasattr(server, 'sse_app'):
         app = server.sse_app
     elif hasattr(server, '_mcp_server') and hasattr(server._mcp_server, 'app'):
