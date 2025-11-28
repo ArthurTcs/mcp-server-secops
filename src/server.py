@@ -92,4 +92,22 @@ def main() -> None:
 
 
 if __name__ == '__main__':
-    main() 
+    main()
+
+# Expose ASGI app for Cloud Run
+# FastMCP instance itself is not an ASGI app, we need to extract/create it.
+try:
+    if hasattr(server, 'create_asgi_app'):
+        app = server.create_asgi_app()
+    elif hasattr(server, 'sse_app'):
+        app = server.sse_app
+    elif hasattr(server, '_mcp_server') and hasattr(server._mcp_server, 'app'):
+        app = server._mcp_server.app
+    else:
+        # Fallback: maybe it IS callable?
+        app = server
+except Exception as e:
+    logging.error(f"Error creating ASGI app: {e}")
+    # If we can't find the app, uvicorn will likely fail when importing 'app', 
+    # but we want to allow the module to import successfully if just running main().
+    app = None

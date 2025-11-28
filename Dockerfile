@@ -23,5 +23,5 @@ EXPOSE 8080
 # Run the server using uvicorn
 # We use the FastMCP ASGI app exposed by the server instance
 # Note: We need to make sure server.py exposes the 'server' object which is the FastMCP instance
-CMD ["uvicorn", "secops_mcp.server:server", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["uvicorn", "secops_mcp.server:app", "--host", "0.0.0.0", "--port", "8080"]
 
