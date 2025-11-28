@@ -25,7 +25,8 @@ from mcp.server.fastmcp import FastMCP
 from secops import SecOpsClient
 
 # Initialize FastMCP server with a descriptive name
-server = FastMCP('Google Security Operations MCP server', log_level="ERROR")
+FASTMCP_LOG_LEVEL=os.environ.get('FASTMCP_LOG_LEVEL',"ERROR") 
+server = FastMCP('Google Security Operations MCP server', FASTMCP_LOG_LEVEL)
 
 # Configure logging
 LOG_LEVEL=os.environ.get('LOG_LEVEL',logging.INFO) 
