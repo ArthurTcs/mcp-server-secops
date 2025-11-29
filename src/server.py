@@ -71,6 +71,15 @@ def get_chronicle_client(
             '(CHRONICLE_PROJECT_ID, CHRONICLE_CUSTOMER_ID)'
         )
 
+    # Handle service account authentication
+    service_account_path = os.environ.get('CHRONICLE_SERVICE_ACCOUNT_PATH')
+    if service_account_path:
+        if os.path.exists(service_account_path):
+            os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = service_account_path
+            logging.info(f"Using service account credentials from: {service_account_path}")
+        else:
+            logging.warning(f"CHRONICLE_SERVICE_ACCOUNT_PATH set to {service_account_path} but file does not exist")
+
     client = SecOpsClient()
     chronicle = client.chronicle(
         customer_id=customer_id, project_id=project_id, region=region
